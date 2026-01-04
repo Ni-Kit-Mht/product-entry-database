@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Entry Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .image-upload {
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .image-upload:hover {
+            background-color: #f8f9ff;
+        }
+        
+        .image-preview {
+            margin-top: 15px;
+            max-width: 300px;
+            max-height: 300px;
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            min-height: 50px;
+        }
+        
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .tag-input-field {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+            padding: 6px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-reset {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+        
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Product Entry Form</h1>
+        
+        <form id="productForm">
+            <div class="form-group">
+                <label>Product ID <span class="required">*</span></label>
+                <input type="text" id="productId" value="P0101" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>Product Name <span class="required">*</span></label>
+                <input type="text" id="name" value="product" required>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Price <span class="required">*</span></label>
+                    <input type="number" id="price" value="0" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Stock <span class="required">*</span></label>
+                    <input type="number" id="stock" value="10" min="0" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Description <span class="required">*</span></label>
+                <textarea id="description" required>description</textarea>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Product Type <span class="required">*</span></label>
+                    <input type="text" id="productType" value="Stationery" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Category <span class="required">*</span></label>
+                    <input type="text" id="category" value="category" required>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Popularity (0-100)</label>
+                    <input type="number" id="popularity" value="100" min="0" max="100">
+                </div>
+                
+                <div class="form-group">
+                    <label>Rating (0-5)</label>
+                    <input type="number" id="rating" value="4.5" min="0" max="5" step="0.1">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Availability</label>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="available" checked>
+                        Available
+                    </label>
+                    <label>
+                        <input type="checkbox" id="availableSoon">
+                        Available Soon
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Estimated Days to Availability</label>
+                <input type="number" id="estimatedDays" value="0" min="0">
+            </div>
+            
+            <div class="form-group">
+                <label>Tags <span class="required">*</span></label>
+                <div class="tags-input" id="tagsContainer">
+                    <input type="text" class="tag-input-field" id="tagInput" placeholder="Type and press Enter">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Product Image <span class="required">*</span></label>
+                <div class="image-upload" id="imageUpload">
+                    <p>📷 Click to upload or drag and drop</p>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" required>
+                </div>
+                <img id="imagePreview" class="image-preview" alt="Preview">
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-submit">💾 Save Product</button>
+                <button type="button" class="btn-reset" onclick="resetForm()">🔄 Reset Form</button>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getDatabase, ref, get, set, push } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSyihPKxSmuUJbedOV1ewY4jDawx82A7k",
+            authDomain: "shop-image-stock.firebaseapp.com",
+            databaseURL: "https://shop-image-stock-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "shop-image-stock",
+            storageBucket: "shop-image-stock.firebasestorage.app",
+            messagingSenderId: "107558527883",
+            appId: "1:107558527883:web:2de05fb836083be933058e",
+            measurementId: "G-FLG563FFZY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        let tags = ["product", "product", "product", "product"];
+        let imageBase64 = "";
+
+        // Initialize tags display
+        function renderTags() {
+            const container = document.getElementById('tagsContainer');
+            const input = document.getElementById('tagInput');
+            container.innerHTML = '';
+            
+            tags.forEach((tag, index) => {
+                const tagEl = document.createElement('span');
+                tagEl.className = 'tag';
+                tagEl.innerHTML = `${tag} <span class="tag-remove" onclick="window.removeTag(${index})">×</span>`;
+                container.appendChild(tagEl);
+            });
+            
+            container.appendChild(input);
+        }
+
+        window.removeTag = function(index) {
+            tags.splice(index, 1);
+            renderTags();
+        };
+
+        // Tag input handler
+        document.getElementById('tagInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = this.value.trim();
+                if (value && !tags.includes(value)) {
+                    tags.push(value);
+                    this.value = '';
+                    renderTags();
+                }
+            }
+        });
+
+        // Image upload handler
+        const imageUpload = document.getElementById('imageUpload');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        imageUpload.addEventListener('click', () => imageInput.click());
+
+        imageUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUpload.style.backgroundColor = '#f0f0ff';
+        });
+
+        imageUpload.addEventListener('dragleave', () => {
+            imageUpload.style.backgroundColor = '';
+        });
+
+        imageUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUpload.style.backgroundColor = '';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleImage(file);
+            }
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleImage(file);
+            }
+        });
+
+        function handleImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imageBase64 = e.target.result;
+                imagePreview.src = imageBase64;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Get next available ID
+        async function getNextProductId() {
+            try {
+                const productsRef = ref(database, 'products');
+                const snapshot = await get(productsRef);
+                
+                if (snapshot.exists()) {
+                    const products = snapshot.val();
+                    const existingIds = products.map(p => parseInt(p.id.replace('P0', '')));
+                    const maxId = Math.max(...existingIds);
+                    return `P0${maxId + 1}`;
+                } else {
+                    return 'P0101';
+                }
+            } catch (error) {
+                console.error('Error getting next ID:', error);
+                return 'P0101';
+            }
+        }
+
+        // Initialize form with next ID
+        async function initializeForm() {
+            const nextId = await getNextProductId();
+            document.getElementById('productId').value = nextId;
+        }
+
+        // Form validation
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const price = document.getElementById('price').value;
+            const description = document.getElementById('description').value.trim();
+            
+            if (!name || name === 'product') {
+                showStatus('Please enter a valid product name', 'error');
+                return false;
+            }
+            
+            if (!price || parseFloat(price) < 0) {
+                showStatus('Please enter a valid price', 'error');
+                return false;
+            }
+            
+            if (!description || description === 'description') {
+                showStatus('Please enter a valid description', 'error');
+                return false;
+            }
+            
+            if (tags.length === 0) {
+                showStatus('Please add at least one tag', 'error');
+                return false;
+            }
+            
+            if (!imageBase64) {
+                showStatus('Please upload a product image', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Save product to Firebase
+        async function saveProduct(productData) {
+            try {
+                const productsRef = ref(database, 'products');
+                const snapshot = await get(productsRef);
+                
+                let products = [];
+                if (snapshot.exists()) {
+                    products = snapshot.val();
+                }
+                
+                products.push(productData);
+                await set(productsRef, products);
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving product:', error);
+                return false;
+            }
+        }
+
+        // Form submission
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const productData = {
+                id: document.getElementById('productId').value,
+                name: document.getElementById('name').value.trim(),
+                price: document.getElementById('price').value,
+                description: document.getElementById('description').value.trim(),
+                image: imageBase64,
+                product_type: document.getElementById('productType').value.trim(),
+                category: document.getElementById('category').value.trim(),
+                popularity: parseInt(document.getElementById('popularity').value),
+                rating: parseFloat(document.getElementById('rating').value),
+                available: document.getElementById('available').checked,
+                available_soon: document.getElementById('availableSoon').checked,
+                stock: parseInt(document.getElementById('stock').value),
+                estimated_days_to_availability: parseInt(document.getElementById('estimatedDays').value),
+                tags: tags
+            };
+            
+            const success = await saveProduct(productData);
+            
+            if (success) {
+                showStatus(`✅ Product ${productData.id} saved successfully!`, 'success');
+                setTimeout(() => {
+                    resetForm();
+                }, 2000);
+            } else {
+                showStatus('❌ Error saving product. Please try again.', 'error');
+            }
+        });
+
+        // Reset form
+        window.resetForm = async function() {
+            document.getElementById('productForm').reset();
+            tags = ["product", "product", "product", "product"];
+            imageBase64 = "";
+            imagePreview.style.display = 'none';
+            renderTags();
+            await initializeForm();
+            document.getElementById('statusMessage').style.display = 'none';
+        };
+
+        // Show status message
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message status-${type}`;
+            statusEl.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Initialize on load
+        renderTags();
+        initializeForm();
+    </script>
+</body>
+</html>
