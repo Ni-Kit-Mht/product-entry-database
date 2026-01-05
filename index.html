@@ -15,7 +15,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
         
         .container {
@@ -24,14 +24,73 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 40px;
+            padding: 25px;
+        }
+
+        .login-container {
+            max-width: 400px;
+        }
+
+        .auth-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .user-email {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .admin-badge {
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
         }
         
         h1 {
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             text-align: center;
-            font-size: 2em;
+            font-size: 1.75em;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
         }
         
         .form-group {
@@ -47,6 +106,8 @@
         }
         
         input[type="text"],
+        input[type="email"],
+        input[type="password"],
         input[type="number"],
         textarea,
         select {
@@ -72,7 +133,8 @@
         
         .checkbox-group {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
             align-items: center;
         }
         
@@ -81,12 +143,14 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 0;
+            white-space: nowrap;
         }
         
         input[type="checkbox"] {
             width: 20px;
             height: 20px;
             cursor: pointer;
+            flex-shrink: 0;
         }
         
         .image-upload {
@@ -102,9 +166,14 @@
             background-color: #f8f9ff;
         }
         
+        .image-upload p {
+            font-size: 14px;
+            color: #666;
+        }
+        
         .image-preview {
             margin-top: 15px;
-            max-width: 300px;
+            max-width: 100%;
             max-height: 300px;
             display: none;
             margin-left: auto;
@@ -146,6 +215,7 @@
             flex: 1;
             min-width: 100px;
             padding: 6px;
+            font-size: 14px;
         }
         
         .button-group {
@@ -163,6 +233,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            min-width: 0;
         }
         
         .btn-submit {
@@ -174,6 +245,12 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
         
         .btn-reset {
             background: #f5f5f5;
@@ -183,6 +260,17 @@
         .btn-reset:hover {
             background: #e0e0e0;
         }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
         
         .status-message {
             margin-top: 20px;
@@ -191,6 +279,7 @@
             text-align: center;
             font-weight: 600;
             display: none;
+            font-size: 14px;
         }
         
         .status-success {
@@ -204,6 +293,12 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
         
         .required {
             color: #e74c3c;
@@ -214,20 +309,187 @@
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
         
+        /* Tablet breakpoint */
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+            
             .row {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            label {
+                font-size: 13px;
+            }
+            
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="number"],
+            textarea {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .button-group {
+                gap: 10px;
+            }
+            
+            button {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .auth-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .user-info {
+                justify-content: center;
+            }
+        }
+        
+        /* Mobile breakpoint */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .container {
+                padding: 15px;
+                border-radius: 10px;
+            }
+            
+            h1 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
             }
             
             .button-group {
                 flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .image-upload {
+                padding: 15px;
+            }
+            
+            .image-upload p {
+                font-size: 13px;
+            }
+            
+            .tag {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+            
+            .tag-input-field {
+                font-size: 13px;
+                min-width: 80px;
+            }
+        }
+        
+        /* Very small screens */
+        @media (max-width: 360px) {
+            .container {
+                padding: 12px;
+            }
+            
+            h1 {
+                font-size: 1.2em;
+            }
+            
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="number"],
+            textarea {
+                padding: 8px;
+                font-size: 13px;
+            }
+            
+            button {
+                padding: 10px;
+                font-size: 13px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Form -->
+    <div class="container login-container" id="loginContainer">
+        <h2>🔐 Admin Login</h2>
+        <div class="info-box">
+            ℹ️ You need admin privileges to add products. Please login with your admin account.
+        </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Email <span class="required">*</span></label>
+                <input type="email" id="loginEmail" required placeholder="admin@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label>Password <span class="required">*</span></label>
+                <input type="password" id="loginPassword" required placeholder="Enter password">
+            </div>
+            
+            <button type="submit" class="btn-login">Login</button>
+            
+            <div id="loginStatus" class="status-message"></div>
+        </form>
+    </div>
+
+    <!-- Product Form -->
+    <div class="container hidden" id="productContainer">
+        <div class="auth-section">
+            <div class="user-info">
+                <span>👤</span>
+                <span class="user-email" id="userEmail"></span>
+                <span class="admin-badge">ADMIN</span>
+            </div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+
         <h1>📦 Product Entry Form</h1>
         
         <form id="productForm">
@@ -244,7 +506,7 @@
             <div class="row">
                 <div class="form-group">
                     <label>Price <span class="required">*</span></label>
-                    <input type="number" id="price" value="0" min="0" required>
+                    <input type="number" id="price" value="0" min="0" step="0.01" required>
                 </div>
                 
                 <div class="form-group">
@@ -287,11 +549,11 @@
                 <div class="checkbox-group">
                     <label>
                         <input type="checkbox" id="available" checked>
-                        Available
+                        <span>Available</span>
                     </label>
                     <label>
                         <input type="checkbox" id="availableSoon">
-                        Available Soon
+                        <span>Available Soon</span>
                     </label>
                 </div>
             </div>
@@ -328,7 +590,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-        import { getDatabase, ref, get, set, push } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+        import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCSyihPKxSmuUJbedOV1ewY4jDawx82A7k",
@@ -343,9 +606,86 @@
 
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
+        const auth = getAuth(app);
 
         let tags = ["product", "product", "product", "product"];
         let imageBase64 = "";
+        let currentUser = null;
+
+        // Check auth state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in, check if admin
+                try {
+                    const tokenResult = await user.getIdTokenResult();
+                    if (tokenResult.claims.admin === true) {
+                        currentUser = user;
+                        document.getElementById('userEmail').textContent = user.email;
+                        document.getElementById('loginContainer').classList.add('hidden');
+                        document.getElementById('productContainer').classList.remove('hidden');
+                        await initializeForm();
+                    } else {
+                        showLoginStatus('You do not have admin privileges.', 'error');
+                        await signOut(auth);
+                    }
+                } catch (error) {
+                    console.error('Error checking admin status:', error);
+                    showLoginStatus('Error verifying admin status.', 'error');
+                    await signOut(auth);
+                }
+            } else {
+                // User is signed out
+                currentUser = null;
+                document.getElementById('loginContainer').classList.remove('hidden');
+                document.getElementById('productContainer').classList.add('hidden');
+            }
+        });
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged will handle the rest
+            } catch (error) {
+                console.error('Login error:', error);
+                let message = 'Login failed. Please check your credentials.';
+                if (error.code === 'auth/user-not-found') {
+                    message = 'User not found.';
+                } else if (error.code === 'auth/wrong-password') {
+                    message = 'Incorrect password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Invalid email address.';
+                }
+                showLoginStatus(message, 'error');
+            }
+        });
+
+        // Logout function
+        window.logout = async function() {
+            try {
+                await signOut(auth);
+                resetForm();
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        };
+
+        // Show login status
+        function showLoginStatus(message, type) {
+            const statusEl = document.getElementById('loginStatus');
+            statusEl.textContent = message;
+            statusEl.className = `status-message status-${type}`;
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
 
         // Initialize tags display
         function renderTags() {
@@ -414,11 +754,47 @@
         });
 
         function handleImage(file) {
+            // Compress and resize image before converting to base64
             const reader = new FileReader();
             reader.onload = function(e) {
-                imageBase64 = e.target.result;
-                imagePreview.src = imageBase64;
-                imagePreview.style.display = 'block';
+                const img = new Image();
+                img.onload = function() {
+                    // Create canvas for resizing
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set max height while preserving aspect ratio
+                    const MAX_HEIGHT = 1000;
+                    
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    // Calculate new dimensions while maintaining aspect ratio
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    // Draw resized image
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convert to base64 with compression (0.7 = 70% quality)
+                    imageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    imagePreview.src = imageBase64;
+                    imagePreview.style.display = 'block';
+                    
+                    // Show compression info
+                    const originalSize = (e.target.result.length / 1024).toFixed(2);
+                    const compressedSize = (imageBase64.length / 1024).toFixed(2);
+                    const reduction = (((originalSize - compressedSize) / originalSize) * 100).toFixed(1);
+                    
+                    console.log(`Original: ${originalSize}KB | Compressed: ${compressedSize}KB | Reduced: ${reduction}%`);
+                    showStatus(`Image compressed: ${originalSize}KB → ${compressedSize}KB (${reduction}% reduction)`, 'success');
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
@@ -500,6 +876,12 @@
                 return true;
             } catch (error) {
                 console.error('Error saving product:', error);
+                
+                // Check if it's a permission error
+                if (error.code === 'PERMISSION_DENIED') {
+                    showStatus('❌ Permission denied. Please ensure you have admin privileges.', 'error');
+                }
+                
                 return false;
             }
         }
@@ -507,6 +889,11 @@
         // Form submission
         document.getElementById('productForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            if (!currentUser) {
+                showStatus('Please login first.', 'error');
+                return;
+            }
             
             if (!validateForm()) {
                 return;
@@ -548,7 +935,9 @@
             imageBase64 = "";
             imagePreview.style.display = 'none';
             renderTags();
-            await initializeForm();
+            if (currentUser) {
+                await initializeForm();
+            }
             document.getElementById('statusMessage').style.display = 'none';
         };
 
@@ -568,7 +957,6 @@
 
         // Initialize on load
         renderTags();
-        initializeForm();
     </script>
 </body>
 </html>
