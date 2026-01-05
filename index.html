@@ -614,31 +614,7 @@
 
         // Check auth state
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                // User is signed in, check if admin
-                try {
-                    const tokenResult = await user.getIdTokenResult();
-                    if (tokenResult.claims.admin === false) {
-                        currentUser = user;
-                        document.getElementById('userEmail').textContent = user.email;
-                        document.getElementById('loginContainer').classList.add('hidden');
-                        document.getElementById('productContainer').classList.remove('hidden');
-                        await initializeForm();
-                    } else {
-                        showLoginStatus('You do not have admin privileges.', 'error');
-                        await signOut(auth);
-                    }
-                } catch (error) {
-                    console.error('Error checking admin status:', error);
-                    showLoginStatus('Error verifying admin status.', 'error');
-                    await signOut(auth);
-                }
-            } else {
-                // User is signed out
-                currentUser = null;
-                document.getElementById('loginContainer').classList.remove('hidden');
-                document.getElementById('productContainer').classList.add('hidden');
-            }
+            
         });
 
         // Login form
