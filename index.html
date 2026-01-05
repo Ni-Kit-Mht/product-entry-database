@@ -55,15 +55,6 @@
             color: #667eea;
         }
 
-        .admin-badge {
-            background: #28a745;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
         .btn-logout {
             background: #dc3545;
             color: white;
@@ -323,7 +314,6 @@
             font-size: 14px;
         }
         
-        /* Tablet breakpoint */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -379,7 +369,6 @@
             }
         }
         
-        /* Mobile breakpoint */
         @media (max-width: 480px) {
             body {
                 padding: 8px;
@@ -429,7 +418,6 @@
             }
         }
         
-        /* Very small screens */
         @media (max-width: 360px) {
             .container {
                 padding: 12px;
@@ -458,14 +446,14 @@
 <body>
     <!-- Login Form -->
     <div class="container login-container" id="loginContainer">
-        <h2>🔐 Admin Login</h2>
+        <h2>🔐 User Login</h2>
         <div class="info-box">
-            ℹ️ You need admin privileges to add products. Please login with your admin account.
+            ℹ️ Please login to add products to the database.
         </div>
         <form id="loginForm">
             <div class="form-group">
                 <label>Email <span class="required">*</span></label>
-                <input type="email" id="loginEmail" required placeholder="admin@example.com">
+                <input type="email" id="loginEmail" required placeholder="user@example.com">
             </div>
             
             <div class="form-group">
@@ -485,7 +473,6 @@
             <div class="user-info">
                 <span>👤</span>
                 <span class="user-email" id="userEmail"></span>
-                <span class="admin-badge">ADMIN</span>
             </div>
             <button class="btn-logout" onclick="logout()">Logout</button>
         </div>
@@ -612,12 +599,22 @@
         let imageBase64 = "";
         let currentUser = null;
 
-        // Check auth state
+        // Check authentication state
         onAuthStateChanged(auth, async (user) => {
-            
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginContainer').classList.add('hidden');
+                document.getElementById('productContainer').classList.remove('hidden');
+                document.getElementById('userEmail').textContent = user.email;
+                await initializeForm();
+            } else {
+                currentUser = null;
+                document.getElementById('loginContainer').classList.remove('hidden');
+                document.getElementById('productContainer').classList.add('hidden');
+            }
         });
 
-        // Login form
+        // Login form submission
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -626,7 +623,6 @@
             
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged will handle the rest
             } catch (error) {
                 console.error('Login error:', error);
                 let message = 'Login failed. Please check your credentials.';
@@ -636,6 +632,8 @@
                     message = 'Incorrect password.';
                 } else if (error.code === 'auth/invalid-email') {
                     message = 'Invalid email address.';
+                } else if (error.code === 'auth/invalid-credential') {
+                    message = 'Invalid credentials. Please try again.';
                 }
                 showLoginStatus(message, 'error');
             }
@@ -651,7 +649,7 @@
             }
         };
 
-        // Show login status
+        // Show login status message
         function showLoginStatus(message, type) {
             const statusEl = document.getElementById('loginStatus');
             statusEl.textContent = message;
@@ -663,7 +661,7 @@
             }, 5000);
         }
 
-        // Initialize tags display
+        // Initialize and render tags
         function renderTags() {
             const container = document.getElementById('tagsContainer');
             const input = document.getElementById('tagInput');
@@ -679,6 +677,7 @@
             container.appendChild(input);
         }
 
+        // Remove tag function
         window.removeTag = function(index) {
             tags.splice(index, 1);
             renderTags();
@@ -697,7 +696,7 @@
             }
         });
 
-        // Image upload handler
+        // Image upload handlers
         const imageUpload = document.getElementById('imageUpload');
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -729,23 +728,19 @@
             }
         });
 
+        // Handle image upload and compression
         function handleImage(file) {
-            // Compress and resize image before converting to base64
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    // Create canvas for resizing
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     
-                    // Set max height while preserving aspect ratio
                     const MAX_HEIGHT = 1000;
-                    
                     let width = img.width;
                     let height = img.height;
                     
-                    // Calculate new dimensions while maintaining aspect ratio
                     if (height > MAX_HEIGHT) {
                         width *= MAX_HEIGHT / height;
                         height = MAX_HEIGHT;
@@ -753,16 +748,12 @@
                     
                     canvas.width = width;
                     canvas.height = height;
-                    
-                    // Draw resized image
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Convert to base64 with compression (0.7 = 70% quality)
                     imageBase64 = canvas.toDataURL('image/jpeg', 0.7);
                     imagePreview.src = imageBase64;
                     imagePreview.style.display = 'block';
                     
-                    // Show compression info
                     const originalSize = (e.target.result.length / 1024).toFixed(2);
                     const compressedSize = (imageBase64.length / 1024).toFixed(2);
                     const reduction = (((originalSize - compressedSize) / originalSize) * 100).toFixed(1);
@@ -775,7 +766,7 @@
             reader.readAsDataURL(file);
         }
 
-        // Get next available ID
+        // Get next available product ID
         async function getNextProductId() {
             try {
                 const productsRef = ref(database, 'products');
@@ -795,13 +786,13 @@
             }
         }
 
-        // Initialize form with next ID
+        // Initialize form with next available ID
         async function initializeForm() {
             const nextId = await getNextProductId();
             document.getElementById('productId').value = nextId;
         }
 
-        // Form validation
+        // Validate form inputs
         function validateForm() {
             const name = document.getElementById('name').value.trim();
             const price = document.getElementById('price').value;
@@ -853,16 +844,15 @@
             } catch (error) {
                 console.error('Error saving product:', error);
                 
-                // Check if it's a permission error
                 if (error.code === 'PERMISSION_DENIED') {
-                    showStatus('❌ Permission denied. Please ensure you have admin privileges.', 'error');
+                    showStatus('❌ Permission denied. Please check your database security rules.', 'error');
                 }
                 
                 return false;
             }
         }
 
-        // Form submission
+        // Form submission handler
         document.getElementById('productForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -904,7 +894,7 @@
             }
         });
 
-        // Reset form
+        // Reset form function
         window.resetForm = async function() {
             document.getElementById('productForm').reset();
             tags = ["product", "product", "product", "product"];
@@ -931,7 +921,7 @@
             }
         }
 
-        // Initialize on load
+        // Initialize on page load
         renderTags();
     </script>
 </body>
