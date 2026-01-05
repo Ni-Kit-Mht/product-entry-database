@@ -618,7 +618,7 @@
                 // User is signed in, check if admin
                 try {
                     const tokenResult = await user.getIdTokenResult();
-                    if (tokenResult.claims.admin === true) {
+                    if (tokenResult.claims.admin === false) {
                         currentUser = user;
                         document.getElementById('userEmail').textContent = user.email;
                         document.getElementById('loginContainer').classList.add('hidden');
